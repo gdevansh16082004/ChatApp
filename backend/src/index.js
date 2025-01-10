@@ -34,7 +34,6 @@ if(process.env.NODE_ENV === "production"){
         res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
     })
 }
-app.use()
 
 server.listen(port,()=>{
     console.log('server is running on port', port);
