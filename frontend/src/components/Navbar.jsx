@@ -1,57 +1,84 @@
-import React from 'react'
-import { useAuthStore } from '../store/useAuthStore'
+import React, { useState } from 'react';
+import { useAuthStore } from '../store/useAuthStore';
 import { Link } from 'react-router-dom';
-import { LogOut, MessageSquare, Settings, User } from 'lucide-react';
+import { LogOut, Settings, User, Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const { logout, authUser } = useAuthStore();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header
-      className="bg-base-100 border-b border-base-300 fixed w-full top-0 z-40 
-    backdrop-blur-lg bg-base-100/80"
-    >
-      <div className="container mx-auto px-4 h-16">
-        <div className="flex items-center justify-between h-full">
-          <div className="flex items-center gap-8">
-            <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-all">
-              <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center">
-                <MessageSquare className="w-5 h-5 text-primary" />
-              </div>
-              <h1 className="text-lg font-bold">Chatty</h1>
-            </Link>
-          </div>
+    <header className="bg-base-100 border-b border-base-300 fixed w-full top-0 z-40 backdrop-blur-lg bg-base-100/80 shadow-sm transition-all">
+      <div className="container mx-auto px-6 sm:px-10 h-16 flex items-center justify-between">
+        
 
-          <div className="flex items-center gap-2">
-            <Link
-              to={"/settings"}
-              className={`
-              btn btn-sm gap-2 transition-colors
-              
-              `}
-            >
-              <Settings className="w-4 h-4" />
-              <span className="hidden sm:inline">Settings</span>
-            </Link>
+        <Link
+          to="/"
+          className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+        >
+          <h1 className="text-xl font-bold tracking-tight">ChatApp</h1>
+        </Link>
 
-            {authUser && (
-              <>
-                <Link to={"/profile"} className={`btn btn-sm gap-2`}>
-                  <User className="size-5" />
-                  <span className="hidden sm:inline">Profile</span>
-                </Link>
 
-                <button className="flex gap-2 items-center" onClick={logout}>
-                  <LogOut className="size-5" />
-                  <span className="hidden sm:inline">Logout</span>
-                </button>
-              </>
-            )}
-          </div>
+        <div className="hidden sm:flex items-center gap-4">
+          {authUser && (
+            <>
+              <Link
+                to="/profile"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-base-200 transition-colors"
+              >
+                <User className="w-5 h-5" />
+                <span>Profile</span>
+              </Link>
+
+              <button
+                onClick={logout}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-error text-white hover:bg-error/90 transition-colors"
+              >
+                <LogOut className="w-5 h-5" />
+                <span>Logout</span>
+              </button>
+            </>
+          )}
         </div>
-      </div>
-    </header>
-  )
-}
 
-export default Navbar
+
+        {authUser && (<button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="sm:hidden p-2 rounded-lg hover:bg-base-200 transition-colors"
+        >
+          {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>)
+        }
+        
+      </div>
+
+
+      {isMenuOpen && authUser && (
+        <div className="sm:hidden bg-base-100 border-t border-base-300 px-6 py-4 space-y-3">
+          <Link
+            to="/profile"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-base-200 transition-colors"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <User className="w-5 h-5" />
+            <span>Profile</span>
+          </Link>
+
+          <button
+            onClick={() => {
+              logout();
+              setIsMenuOpen(false);
+            }}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-error text-white hover:bg-error/90 transition-colors w-full"
+          >
+            <LogOut className="w-5 h-5" />
+            <span>Logout</span>
+          </button>
+        </div>
+      )}
+    </header>
+  );
+};
+
+export default Navbar;

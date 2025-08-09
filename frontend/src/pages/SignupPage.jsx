@@ -31,7 +31,6 @@ const SignupPage = () => {
 
   return (
     <div className="min-h-screen mt-28">
-    {/* left side */}
     <div className="flex flex-col justify-center items-center p-6 sm:p-12">
       <div className="w-full max-w-md space-y-8">
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -64,7 +63,7 @@ const SignupPage = () => {
               <input
                 type="email"
                 className={`input input-bordered w-full pl-10`}
-                placeholder="you@example.com"
+                placeholder="barney@example.com"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
@@ -91,7 +90,7 @@ const SignupPage = () => {
                 className="absolute inset-y-0 right-0 pr-3 flex items-center"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword ? (
+                {!showPassword ? (
                   <EyeOff className="size-5 text-base-content/40" />
                 ) : (
                   <Eye className="size-5 text-base-content/40" />
